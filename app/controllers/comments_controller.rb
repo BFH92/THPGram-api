@@ -1,7 +1,7 @@
 class CommentsController < ApplicationController
   before_action :set_comment, only: [:show, :update, :destroy]
-
-  # GET /comments
+  before_action :authenticate_user!, only: %i[create edit update destroy ]
+  before_action :is_authorized_user, only: %i[update destroy ]  # GET /comments
   def index
     @comments = Comment.all
 
@@ -47,5 +47,13 @@ class CommentsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def comment_params
       params.require(:comment).permit(:content, :user_id, :post_id)
+    end
+
+    def is_authorized_user
+      if user_signed_in? && @comment.user_id == current_user.id 
+        return true 
+      else
+        unauthorized
+      end 
     end
 end

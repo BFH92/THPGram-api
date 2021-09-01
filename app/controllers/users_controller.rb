@@ -1,16 +1,19 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
-
+  before_action :authenticate_user!
+  before_action :is_authorized_user, only: %i[update destroy ]
+  
   # GET /users
   def index
     @users = User.all
 
     render json: @users
+    
   end
 
   # GET /users/1
   def show
-    render json: @user
+    render json: @user, include: [:posts]
   end
 
   # POST /users
@@ -47,5 +50,13 @@ class UsersController < ApplicationController
     # Only allow a list of trusted parameters through.
     def user_params
       params.require(:user).permit(:name)
+    end
+
+    def is_authorized_user
+      if user_signed_in? && @user.id == current_user.id 
+        return true 
+      else
+        unauthorized
+      end 
     end
 end

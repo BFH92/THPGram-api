@@ -1,13 +1,17 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :update, :destroy]
-  before_action :authenticate_user!, only: %i[create edit update destroy ]
+  before_action :authenticate_user!, only: %i[show create edit update destroy ]
   before_action :is_authorized_user, only: %i[update destroy ]
   before_action :is_public?, only: %i[show]
   # GET /posts
   def index
     @posts = Post.all
 
-    render json: @posts
+    render json: @posts.map{|post|
+      if post.is_private == false 
+         post.as_json().merge(image_path: url_for(post.image), username: post.user.name)
+      end
+    }
   end
 
   # GET /posts/1
@@ -51,6 +55,13 @@ class PostsController < ApplicationController
     end
     def is_public?
       if  @post.is_private == false ||  user_signed_in? && is_authorized_user
+        return true 
+      else
+        unauthorized
+      end 
+    end
+    def is_authorized_user
+      if user_signed_in? && @post.user_id == current_user.id 
         return true 
       else
         unauthorized
