@@ -9,7 +9,7 @@ class PostsController < ApplicationController
 
     render json: @posts.map{|post|
       if post.is_private == false 
-         post.as_json().merge(image_path: url_for(post.image), username: post.user.name)
+         post.as_json().merge(image_path: url_for(post.image), username: post.user.name, comments: post.comments)
       end
     }
   end

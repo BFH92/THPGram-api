@@ -23,7 +23,11 @@ module THPGramApi
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
-
+  #config.action_dispatch.default_headers = {
+  #  'Access-Control-Allow-Origin' => 'http://localhost:3000',
+  #  'Access-Control-Request-Method' => %w{GET POST DELETE OPTIONS}.join(","),
+  #  'jwt' => "Authorization"
+  #}
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
