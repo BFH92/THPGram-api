@@ -314,16 +314,16 @@ Devise.setup do |config|
   # config.sign_in_after_change_password = true
     config.jwt do |jwt|
       jwt.secret = ENV['DEVISE_JWT_SECRET_KEY']
-  
-    end
-    config.dispatch_requests = [
-      ['POST', %r{^login$}],
-      ['POST', %r{^login.json$}]
-    ]
-      config.revocation_requests = [
-        ['DELETE', %r{^logout$}],
-        ['DELETE', %r{^logout.json$}]
+      jwt.dispatch_requests = [
+        ['POST', %r{^login$}],
+        ['POST', %r{^login.json$}]
       ]
+        jwt.revocation_requests = [
+          ['DELETE', %r{^logout$}],
+          ['DELETE', %r{^logout.json$}]
+        ]
+    end
+    
 
 
 end
