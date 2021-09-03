@@ -10,8 +10,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def register_success
-    jwt = response.headers
-    render json: {jwt: jwt, message: "Login successful!"}
+    
+    render json: {message: "Login successful!"}
 
   end
 

@@ -23,7 +23,7 @@ class PostsController < ApplicationController
   def create
     @post = Post.new(post_params)
     if @post.save
-        render json: @post.as_json().merge(image_path: url_for(@post.image)), status: :created, location: @post
+      render json: @post.as_json().merge(image_path: url_for(@post.image)), status: :created, location: @post
     else
       render json: @post.errors, status: :unprocessable_entity
     end
